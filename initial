@@ -1,0 +1,43 @@
+$kubectl expose deployment multi-ports --type=LoadBalancer --port=9000,9001,9002
+$kubectl get services
+$kubectl describe service multi-ports 
+
+minikube dashboard
+
+
+
+kubectl expose deployment multi-ports --type=LoadBalancer --name=mainport --port=9000 --target-port=9000
+
+kubectl expose deployment multi-ports --type=LoadBalancer --name=portone --port=9001 --target-port=9001
+
+kubectl expose deployment multi-ports --type=LoadBalancer --name=porttwo --port=9002 --target-port=9002
+
+$minikube service mainport
+| default   | mainport |        9000 | http://192.168.64.8:32474 |
+minikube addons list
+minikube addons enable metrics-server
+
+
+
+
+
+kubectl expose deployment ml3 --type=LoadBalancer --name=management --port=80 --target-port=8000
+kubectl expose deployment ml3 --type=LoadBalancer --name=query --port=80 --target-port=8001
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp <-- use a proper selector for your pods
+  ports:
+  - name: management 
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  - name: query 
+    protocol: TCP
+    port: 81
+    targetPort: 8001
